@@ -1,0 +1,15 @@
+name: "Git Version"
+description: "Setup and Execute GitVersion"
+runs:
+  using: "composite"
+  steps:
+    - name: "Setup .NET 5"
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: "5.0.x"
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: "5.x"
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@v0.9.7

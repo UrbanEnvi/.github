@@ -1,0 +1,23 @@
+name: "NuGet publish"
+description: "Publishes NuGet packages to feed"
+inputs:
+  solution:
+    description: "Solution to build"
+    required: true
+  projectsToPack:
+    description: "Projects to pack and push"
+    required: true
+    default: "**/*.Client.csproj;**/*.Contracts.csproj"
+runs:
+  using: "composite"
+  steps:
+    - id: gitversion
+      uses: ../gitversion.yaml
+    - name: "Setup .NET 6"
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: "6.0.x"
+        include-prerelease: true
+
+    - run: dotnet restore ${{ inputs.solution }}
+    - run: dotnet pack ${{ inputs.projectsToPack }} --include-source --include-symbols /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersion }}
