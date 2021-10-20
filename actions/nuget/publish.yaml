@@ -18,6 +18,6 @@ runs:
       with:
         dotnet-version: "6.0.x"
         include-prerelease: true
-
+    - run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/UrbanEnvi/index.json"
     - run: dotnet restore ${{ inputs.solution }}
-    - run: dotnet pack ${{ inputs.projectsToPack }} --include-source --include-symbols /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersion }}
+    - run: dotnet pack ${{ inputs.projectsToPack }} --include-source --include-symbols /p:Configuration=Release /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersion }}
